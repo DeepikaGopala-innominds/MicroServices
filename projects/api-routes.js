@@ -19,24 +19,34 @@ router.route('/projects/:id')
     .delete(projectController.delete);
 
 var teamsController = require('./teamsController');
-router.route('/projects/:id/teams')
+router.route('/projects/:pid/teams')
     .get(teamsController.index)
     .post(teamsController.new);
-router.route('/projects/:id/teams')
+router.route('/projects/:pid/teams/:tid?')
     .get(teamsController.view)
     .patch(teamsController.update)
     .put(teamsController.update)
     .delete(teamsController.delete);
 
-// var expenceController = require('./expenceController');
-//     router.route('/project/:id/expences')
-//         .get(expenceController.index)
-//         .post(expenceController.new);
-//     router.route('/projects/:id/expences/:id')
-//         .get(expenceController.view)
-//         .patch(expenceController.update)
-//         .put(expenceController.update)
-//         .delete(expenceController.delete);
+var expenceController = require('./expenceController');
+    router.route('/project/:pid/expences')
+        .get(expenceController.index)
+        .post(expenceController.new);
+    router.route('/projects/:pid/expences/:eid')
+        .get(expenceController.view)
+        .patch(expenceController.update)
+        .put(expenceController.update)
+        .delete(expenceController.delete);
+
+var expencesubcategoryController = require('./expencesubcategoryController');
+router.route('/project/:pid/expences/:eid/subcategory')
+    .get(expencesubcategoryController.index)
+    .post(expencesubcategoryController.new);
+router.route('/projects/:pid/expences/:eid/subcategory/:esid')
+    .get(expencesubcategoryController.view)
+    .patch(expencesubcategoryController.update)
+    .put(expencesubcategoryController.update)
+    .delete(expencesubcategoryController.delete);
     
 
 module.exports = router;
