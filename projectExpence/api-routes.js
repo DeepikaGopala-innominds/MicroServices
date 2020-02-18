@@ -1,5 +1,6 @@
 // Initialize express router
 let router = require('express').Router();
+let jsontoken = require('jsonwebtoken');
 // Set default API response
 router.get('/', function (req, res) {
     res.json({

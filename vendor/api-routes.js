@@ -9,6 +9,7 @@ router.get('/', function (req, res) {
 });
 // Import contact controller
 var vendorController = require('./vendorController');
+
 // Contact routes
 router.route('/vendor')
     .get(vendorController.index)
@@ -18,5 +19,6 @@ router.route('/vendor/:id')
     .patch(vendorController.update)
     .put(vendorController.update)
     .delete(vendorController.delete);
+    
 // Export API routes
 module.exports = router;

@@ -15,7 +15,8 @@ var projectSchema = mongoose.Schema({
     },
     status: {
         type: Boolean,
-        required: false
+        required: false,
+        default: true
     },
     created_date: {
         type: Date,
