@@ -13,6 +13,10 @@ var projectSchema = mongoose.Schema({
         type: Number,
         required: true
     },
+    email_id: {
+        type: String,
+        required: true
+    },
     status: {
         type: Boolean,
         required: false,

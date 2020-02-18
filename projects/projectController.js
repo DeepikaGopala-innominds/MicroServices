@@ -22,6 +22,7 @@ exports.new = function (req, res) {
     var project = new Project();
     project.name = req.body.name ? req.body.name : project.name;
     project.manager_id = req.body.manager_id;
+    project.email_id = req.body.email_id;
     project.customer = req.body.customer;
     project.created_date = req.body.created_date;
     project.status = req.body.status;
@@ -53,6 +54,7 @@ Project.findById(req.params.id, function (err, project) {
             res.send(err);
             project.name = req.body.name ? req.body.name : project.name;
             project.manager_id = req.body.manager_id;
+            project.email_id = req.body.email_id;
             project.customer = req.body.customer;
             project.created_date = req.body.created_date;
             project.status = req.body.status;
