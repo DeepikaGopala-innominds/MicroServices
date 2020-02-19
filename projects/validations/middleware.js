@@ -2,7 +2,7 @@ const Joi = require('joi');
 const middleware = (schema, property) => { 
   return (req, res, next) => { 
   const { value, error } = Joi.validate(req.body, schema); 
-console.log("value",value);
+console.log("error",error);
   if (!error) { 
     next(); 
   } else { 

@@ -14,8 +14,9 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 
 // // Connect to Mongoose and set connection variable
-mongoose.connect('mongodb://localhost/expenceManagement', { useNewUrlParser: true});
+mongoose.connect('mongodb://localhost/expenceManagement', { useNewUrlParser: true, useUnifiedTopology: true });
 var database = mongoose.connection;
+
 
 if(!database)
     console.log("Error connecting db")
@@ -23,19 +24,20 @@ else
     console.log("Db connected successfully")
 
 app.use(cors({
-    origin: 'http://localhost',
+    origin: '*',
     allowedHeaders: ["Content-Type", "Authorization"]
 }));
 app.options('*', cors())
 
-app.all('', function(req, res, next) {
-    res.header("Access-Control-Allow-Origin", "http://localhost");
+ app.use('/api', apiRoutes);
+
+app.all('', function(err,req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
     res.header('Access-Control-Allow-Methods', 'PUT, GET, POST, DELETE, OPTIONS');
     res.header('Access-Control-Allow-Headers', "Origin, X-Requested-With, Content-Type, Accept, Authorization");
-    //Auth Each API Request created by user.
-    next();
+    return false;
 });
-app.use('/api', apiRoutes);
+
 app.listen(port, function () {
     console.log("Running Projects on port " + port);
 });
@@ -84,14 +86,4 @@ app.listen(port, function () {
 //   model: require("./model.js"), // See https://github.com/oauthjs/node-oauth2-server for specification
 // });
 
-// app.use(bodyParser.json());
-// app.use(bodyParser.urlencoded({ extended: false }));
 // app.use(app.oauth.authorize());
-
-// app.use(function(req, res) {
-//   res.send('Secret area');
-// });
-
-// app.listen(port, function () {
-//       console.log("Running Projects on port " + port);
-//   });

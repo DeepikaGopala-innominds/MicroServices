@@ -1,5 +1,4 @@
 var mongoose = require('mongoose');
-// Setup schema
 var teamList = mongoose.Schema({
     user_id: {
         type: Number
@@ -39,7 +38,6 @@ var projectSchema = mongoose.Schema({
     },
     created_date: {
         type: Date,
-        default: Date.now
     },
     teamMembers: [teamList]
 });

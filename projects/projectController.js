@@ -27,30 +27,40 @@ exports.new = function (req, res) {
     project.customer = req.body.customer;
     project.created_date = req.body.created_date;
     project.status = req.body.status;
-    if(typeof req.body.teamMembers !== "undefined"){
-        var projectTeam = new Team();
-            projectTeam.user_id = req.body.user_id;
-            projectTeam.role = req.body.role;
-            projectTeam.department = req.body.department;
-            project.teamMembers = projectTeam;
-    }else{
-        console.log("false");
-        var projectTeam = new Team();
-        project.teamMembers = projectTeam;
-    }
+    var that = req.body.teamMembers;
 // save the project and check for errors
     project.save(function (err) {
-        if (err)
-            res.json(err);
-        projectTeam.save(function (err) {
-                if (err)
-                    res.json(err);
-                res.json({
-                    message: 'New project created!',
-                    data: project
-                });
+        // if (err)
+        //     res.json(err);
+        var projectArray = [];
+        if(typeof that !== "undefined"){      
+            that.forEach(team => {
+                var projectTeam = new Team();
+                projectTeam.project_id = project._id;
+                projectTeam.user_id = team.user_id;
+                projectTeam.role = team.role;
+                projectTeam.department = team.department;
+                projectArray.push(projectTeam);
             });
-       
+        }else{
+            var projectTeam = new Team();
+            project.teamMembers = projectTeam;
+        }
+    
+        project.teamMembers = projectArray;
+        console.log("projectTeam",projectArray);
+        projectArray.forEach(projectTeams => {
+            projectTeams.save(function (err) {
+                if (err){
+                    res.json(err);
+                }else{
+                    res.json({
+                        message: 'New project created with team!',
+                        data: project
+                    });
+               }
+           });
+        });       
     });
 };
 // Handle view project info
@@ -99,3 +109,4 @@ exports.delete = function (req, res) {
         });
     });
 };
+
