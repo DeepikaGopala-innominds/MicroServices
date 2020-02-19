@@ -1,6 +1,7 @@
 // projectController.js
 // Import project model
 Project = require('./projectModel');
+Team = require('./teamsModel');
 // Handle index actions
 exports.index = function (req, res) {
     Project.get(function (err, projects) {
@@ -26,14 +27,30 @@ exports.new = function (req, res) {
     project.customer = req.body.customer;
     project.created_date = req.body.created_date;
     project.status = req.body.status;
+    if(typeof req.body.teamMembers !== "undefined"){
+        var projectTeam = new Team();
+            projectTeam.user_id = req.body.user_id;
+            projectTeam.role = req.body.role;
+            projectTeam.department = req.body.department;
+            project.teamMembers = projectTeam;
+    }else{
+        console.log("false");
+        var projectTeam = new Team();
+        project.teamMembers = projectTeam;
+    }
 // save the project and check for errors
     project.save(function (err) {
-        // if (err)
-        //     res.json(err);
-        res.json({
-            message: 'New project created!',
-            data: project
-        });
+        if (err)
+            res.json(err);
+        projectTeam.save(function (err) {
+                if (err)
+                    res.json(err);
+                res.json({
+                    message: 'New project created!',
+                    data: project
+                });
+            });
+       
     });
 };
 // Handle view project info

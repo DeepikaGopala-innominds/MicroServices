@@ -1,6 +1,6 @@
 // Initialize express router
 let router = require('express').Router();
-const schema = require("./validations/schema");
+const schema = require("./validations/project/schema");
 const middleware = require('./validations/middleware'); 
 // Set default API response
 router.get('/', function (req, res) {
@@ -22,11 +22,8 @@ router.route('/projects/:id')
 var teamsController = require('./teamsController');
 router.route('/projects/:pid/teams')
     .get(teamsController.index)
-    .post(teamsController.new);
 router.route('/projects/:pid/teams/:tid?')
     .get(teamsController.view)
-    .patch(teamsController.update)
-    .put(teamsController.update)
     .delete(teamsController.delete);
 
 var expenceController = require('./expenceController');

@@ -3,46 +3,16 @@ let bodyParser = require('body-parser');
 let mongoose = require('mongoose');
 let app = express();
 let apiRoutes = require("./api-routes");
-var port = process.env.PORT || 8000;
+let axios = require('axios');
 let cors = require('cors');
-// OAuth2Server = require('oauth2-server');
-// Request = OAuth2Server.Request;
-// Response = OAuth2Server.Response;
-//let OAuthServer = require('express-oauth-server');
+var port = process.env.PORT || 9000;
 
-// app.oauth = new OAuthServer({
-// 	model: require('./model.js'),
-// 	accessTokenLifetime: 60 * 60,
-// 	allowBearerTokensInQueryString: true
-// });
+const clientID = '478t7ahpg9o8kvbefsatl9tr9f';
+const clientSecret = '1h9bso3il8ah3qb2q6gma3cqbunv5jm2jjegaeor5464m9pbvonr';
 
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
-// var mongoUri = 'mongodb://localhost/oauth';
 
-// mongoose.connect(mongoUri, {
-// 	useCreateIndex: true,
-// 	useNewUrlParser: true
-// }, function(err, res) {
-
-// 	if (err) {
-// 		return console.error('Error connecting to "%s":', mongoUri, err);
-// 	}
-// 	console.log('Connected successfully to "%s"', mongoUri);
-// });
-
-// app.oauth = new OAuth2Server({
-// 	model: require('./model.js'),
-// 	accessTokenLifetime: 60 * 60,
-// 	allowBearerTokensInQueryString: true
-// });
-
-// app.all('/oauth/token', obtainToken());
-
-// app.get("/", authenticateRequest(), function(req,res){
-//     res.send("Secret area");
-// });
-// app.use(app.oauth.errorHandler());
 // // Connect to Mongoose and set connection variable
 mongoose.connect('mongodb://localhost/expenceManagement', { useNewUrlParser: true});
 var database = mongoose.connection;
@@ -52,10 +22,6 @@ if(!database)
 else
     console.log("Db connected successfully")
 
-// // Setup server port
-// var port = process.env.PORT || 8000;
-// // Use Api routes in the App
-// Middlewares
 app.use(cors({
     origin: 'http://localhost',
     allowedHeaders: ["Content-Type", "Authorization"]

@@ -1,5 +1,20 @@
 var mongoose = require('mongoose');
 // Setup schema
+var teamList = mongoose.Schema({
+    user_id: {
+        type: Number
+    },
+    role: {
+        type: String
+    },
+    department: {
+        type: String
+    },
+    created_date: {
+        type: Date,
+        default: Date.now
+    }
+});
 var projectSchema = mongoose.Schema({
     name: {
         type: String,
@@ -25,8 +40,11 @@ var projectSchema = mongoose.Schema({
     created_date: {
         type: Date,
         default: Date.now
-    }
+    },
+    teamMembers: [teamList]
 });
+
+
 // Export Project model
 var Project = module.exports = mongoose.model('projects', projectSchema);
 module.exports.get = function (callback, limit) {
