@@ -1,5 +1,7 @@
 // Initialize express router
 let router = require('express').Router();
+const schema = require("./validations/schema");
+const middleware = require('./validations/middleware'); 
 // Set default API response
 router.get('/', function (req, res) {
     res.json({
@@ -7,15 +9,14 @@ router.get('/', function (req, res) {
         message: 'Welcome to RESTHub crafted with love!',
     });
 });
-
 var projectController = require('./projectController');
 router.route('/projects')
     .get(projectController.index)
-    .post(projectController.new);
+    .post(middleware(schema.createProject),projectController.new);
 router.route('/projects/:id')
-    .get(projectController.view)
-    .patch(projectController.update)
-    .put(projectController.update)
+    .get(middleware(schema.getProject),projectController.view)
+    .patch(middleware(schema.updateProject),projectController.update)
+    .put(middleware(schema.updateProject),projectController.update)
     .delete(projectController.delete);
 
 var teamsController = require('./teamsController');
@@ -46,7 +47,7 @@ router.route('/projects/:pid/expences/:eid/subcategory/:esid')
     .get(expencesubcategoryController.view)
     .patch(expencesubcategoryController.update)
     .put(expencesubcategoryController.update)
-    .delete(expencesubcategoryController.delete);
-    
+    .delete(expencesubcategoryController.delete);  
+
 
 module.exports = router;
