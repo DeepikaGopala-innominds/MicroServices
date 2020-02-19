@@ -12,11 +12,11 @@ router.get('/', function (req, res) {
 var projectController = require('./projectController');
 router.route('/projects')
     .get(projectController.index)
-    .post(middleware(schema.createProject),projectController.new);
+    .post(projectController.new);
 router.route('/projects/:id')
-    .get(middleware(schema.getProject),projectController.view)
-    .patch(middleware(schema.updateProject),projectController.update)
-    .put(middleware(schema.updateProject),projectController.update)
+    .get(projectController.view)
+    .patch(projectController.update)
+    .put(projectController.update)
     .delete(projectController.delete);
 
 var teamsController = require('./teamsController');
