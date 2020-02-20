@@ -37,9 +37,10 @@ var projectSchema = mongoose.Schema({
         default: true
     },
     created_date: {
-        type: Date,
-    },
-    teamMembers: [teamList]
+        type: Date
+    }
+    // },
+    // teamMembers: [teamList]
 });
 
 

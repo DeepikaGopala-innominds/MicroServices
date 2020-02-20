@@ -79,7 +79,7 @@ Team.findById(req.params.tid, function (err, team) {
 };
 // Handle delete team
 exports.delete = function (req, res) {
-    Team.remove({
+    Team.deleteOne({
         _id: req.params.tid
     }, function (err, project) {
         if (err)

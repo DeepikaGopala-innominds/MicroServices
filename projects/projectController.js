@@ -13,6 +13,7 @@ exports.index = function (req, res) {
         }
         res.json({
             status: "success",
+            statusCode: 200,
             message: "Projects retrieved successfully",
             data: projects
         });
@@ -20,7 +21,7 @@ exports.index = function (req, res) {
 };
 // Handle create project actions
 exports.new = function (req, res) {
-    var project = new Project();
+    var  project = new Project();
     project.name = req.body.name ? req.body.name : project.name;
     project.manager_id = req.body.manager_id;
     project.email_id = req.body.email_id;
@@ -28,40 +29,60 @@ exports.new = function (req, res) {
     project.created_date = req.body.created_date;
     project.status = req.body.status;
     var that = req.body.teamMembers;
-// save the project and check for errors
-    project.save(function (err) {
-        // if (err)
-        //     res.json(err);
-        var projectArray = [];
-        if(typeof that !== "undefined"){      
-            that.forEach(team => {
-                var projectTeam = new Team();
-                projectTeam.project_id = project._id;
-                projectTeam.user_id = team.user_id;
-                projectTeam.role = team.role;
-                projectTeam.department = team.department;
-                projectArray.push(projectTeam);
-            });
-        }else{
-            var projectTeam = new Team();
-            project.teamMembers = projectTeam;
+    // save the project and check for errors
+    Project.findOne({ name: req.body.name }, function (err, success) {
+        if (err) {
+            console.log("error",err);
+            res.send(err);
         }
-    
-        project.teamMembers = projectArray;
-        console.log("projectTeam",projectArray);
-        projectArray.forEach(projectTeams => {
-            projectTeams.save(function (err) {
-                if (err){
-                    res.json(err);
-                }else{
-                    res.json({
-                        message: 'New project created with team!',
-                        data: project
-                    });
-               }
-           });
-        });       
-    });
+        else {
+            console.log("success",success);
+            if (success == null) {           
+                project.save(function (err) {
+                    // if (err)
+                    //     res.json(err);
+                    var projectArray = [];
+                    if(typeof that !== "undefined" && that.length > 0){      
+                        that.forEach(team => {
+                            var projectTeam = new Team();
+                            projectTeam.project_id = project._id;
+                            projectTeam.user_id = team.user_id;
+                            projectTeam.role = team.role;
+                            projectTeam.department = team.department;
+                            projectArray.push(projectTeam);
+                        });
+                    }    
+                    project.teamMembers = projectArray;
+                    if(projectArray.length > 0){
+                        projectArray.forEach(projectTeams => {
+                            projectTeams.save(function (err) {
+                                if (err){
+                                    res.json(err);
+                                }else{
+                                    res.json({
+                                        statusCode: 200,
+                                        message: 'Project with team members created successfully!',
+                                        data: project
+                                    });
+                            }
+                        });
+                        });    
+                    }else {
+                        res.json({
+                            statusCode: 200,
+                            message: 'Project created Successfully!',
+                            data: project
+                        });
+                    }                
+                });
+            } else {
+                res.send({
+                    status: 200,
+                    message: "Project with the name already exists!"});
+            }
+        }
+    })
+
 };
 // Handle view project info
 exports.view = function (req, res) {
@@ -69,7 +90,7 @@ exports.view = function (req, res) {
         if (err)
             res.send(err);
         res.json({
-            message: 'Project details loading..',
+            message: 'Loading project details..',
             data: project
         });
     });
@@ -98,7 +119,7 @@ Project.findById(req.params.id, function (err, project) {
 };
 // Handle delete project
 exports.delete = function (req, res) {
-    Project.remove({
+    Project.deleteOne({
         _id: req.params.id
     }, function (err, project) {
         if (err)
