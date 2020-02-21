@@ -6,7 +6,7 @@ var expenceSchema = mongoose.Schema({
         required: true
     },
     project_id: {
-        type: Number,
+        type: String,
         required: true
     },
     created_date: {

@@ -11,7 +11,8 @@ var teamSchema = mongoose.Schema({
     },
     role: {
         type: String,
-        required: true
+        required: true,
+        enum: ['initiator', 'financer', 'resolver']
     },
     department: {
         type: String,

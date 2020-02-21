@@ -4,7 +4,6 @@ let bodyParser = require('body-parser');
 let mongoose = require('mongoose');
 let apiRoutes = require("./api-routes");
 let CognitoExpress = require('cognito-express');
-const expressValidator = require('express-validator')
 var port = process.env.PORT || 4000;
 let app = express();
 const cognitoExpress = new CognitoExpress({
@@ -25,7 +24,6 @@ else
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
-app.use(expressValidator);
 app.use('/api', apiRoutes);
 app.use(function(req, res, next) {
     let accessTokenFromClient = req.headers.accesstoken;

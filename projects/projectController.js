@@ -27,7 +27,7 @@ exports.new = function (req, res) {
     project.email_id = req.body.email_id;
     project.customer = req.body.customer;
     project.created_date = req.body.created_date;
-    project.status = req.body.status;
+    project.status = true;
     var that = req.body.teamMembers;
     // save the project and check for errors
     Project.findOne({ name: req.body.name }, function (err, success) {

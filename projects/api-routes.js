@@ -1,7 +1,5 @@
 // Initialize express router
 let router = require('express').Router();
-const schema = require("./validations/project/schema");
-const middleware = require('./validations/middleware'); 
 // Set default API response
 router.get('/', function (req, res) {
     res.json({
@@ -27,16 +25,17 @@ router.route('/projects/:pid/teams/:tid?')
     .delete(teamsController.delete);
 
 var expenceController = require('./expenceController');
-    router.route('/project/:pid/expences')
-        .get(expenceController.index)
-        .post(expenceController.new);
+    router.route('/projects/get/expences')
+        .get(expenceController.index);
+    router.route('/projects/post/expences')
+        .post(expenceController.new)
     router.route('/projects/:pid/expences/:eid')
         .get(expenceController.view)
         .patch(expenceController.update)
         .put(expenceController.update)
         .delete(expenceController.delete);
 
-var expencesubcategoryController = require('./expencesubcategoryController');
+        var expencesubcategoryController = require('./expencesubcategoryController');
 router.route('/project/:pid/expences/:eid/subcategory')
     .get(expencesubcategoryController.index)
     .post(expencesubcategoryController.new);
